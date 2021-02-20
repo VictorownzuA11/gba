@@ -7,7 +7,7 @@ GBA chess game
 2. Set your path variable in the Makefile
 
 # Getting started
-1. Build - make compile
+1. Build - make build
     Compiles the C code into and executable ROM for the emulator
 
 2. Clean - make clean

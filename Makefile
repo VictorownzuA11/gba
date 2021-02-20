@@ -11,43 +11,53 @@ endif
 
 include $(DEVKITARM)gba_rules
 
-#---------------------------------------------------------------------------------
-# TARGET is the name of the output
-# BUILD is the directory where object files & intermediate files will be placed
-# SOURCES is a list of directories containing source code
-# INCLUDES is a list of directories containing extra header files
-# DATA is a list of directories containing binary data
-# GRAPHICS is a list of directories containing files to be processed by grit
-#
-# All directories are specified relative to the project directory where
-# the makefile is found
-#
-#---------------------------------------------------------------------------------
-TARGET		:= $(notdir $(CURDIR))
-BUILD		:= build
-SOURCES		:= asm source resources
-INCLUDES	:= include resources
-DATA		:= data
-MUSIC		:=
+PATH := $(DEVKITARM)/bin:$(PATH)
 
-COMPILER = $(DEVKITARM)bin/
-TOOLS = $(DEVKITPRO)/tools/bin/
-OUT = ~/Documents/Stuff/School/MIE438/Project/gba/out/
+# --- Project details -------------------------------------------------
 
-# Flags
-ARCH	:=	-mthumb -mthumb-interwork
+PROJ    := src/main
+TARGET  := $(PROJ)
 
-CFLAGS:= -g -Wall -O3 -mcpu=arm7tdmi -mtune=arm7tdmi -fomit-frame-pointer -ffast-math -fno-strict-aliasing $(ARCH)
+OBJS    := $(PROJ).o
 
-FILE := color
+# --- Build defines ---------------------------------------------------
 
-compile:
-	if [ -d $(OUT) ]; then rm -rf $(OUT); mkdir $(OUT); else mkdir $(OUT); fi
+PREFIX  := arm-none-eabi-
+CC      := $(PREFIX)gcc
+LD      := $(PREFIX)gcc
+OBJCOPY := $(PREFIX)objcopy
 
-	$(COMPILER)arm-none-eabi-gcc -c src/$(FILE).c -O2 -o $(OUT)$(FILE).o $(CFLAGS)
-	$(COMPILER)arm-none-eabi-gcc -v $(OUT)$(FILE).o -specs=gba.specs -o $(OUT)$(FILE).elf $(CFLAGS)
-	$(COMPILER)arm-none-eabi-objcopy -v -O binary $(OUT)$(FILE).elf $(OUT)$(FILE).gba
-	$(TOOLS)gbafix $(OUT)$(FILE).gba
+ARCH    := -mthumb-interwork -mthumb
+SPECS   := -specs=gba.specs
 
-clean:
-	rm -rf $(OUT)
+CFLAGS  := $(ARCH) -O2 -Wall -fno-strict-aliasing
+LDFLAGS := $(ARCH) $(SPECS)
+
+
+.PHONY : build clean
+
+# --- Build -----------------------------------------------------------
+# Build process starts here!
+build: $(TARGET).gba
+
+# Strip and fix header (step 3,4)
+$(TARGET).gba : $(TARGET).elf
+	$(OBJCOPY) -v -O binary $< $@
+	-@gbafix $@
+
+# Link (step 2)
+$(TARGET).elf : $(OBJS)
+	$(LD) $^ $(LDFLAGS) -o $@
+
+# Compile (step 1)
+$(OBJS) : %.o : %.c
+	$(CC) -c $< $(CFLAGS) -o $@
+
+# --- Clean -----------------------------------------------------------
+
+clean :
+	@rm -fv out/*.gba
+	@rm -fv out/*.elf
+	@rm -fv out/*.o
+
+#EOF
