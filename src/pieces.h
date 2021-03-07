@@ -3,6 +3,7 @@
 
 typedef struct Pieces_t {
 	// Board
+	// Pawn
 	// Bishop
 	// Knight
 	// Rook

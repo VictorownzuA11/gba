@@ -20,8 +20,12 @@ void InitChessPieces(void) {
 			Pieces.Piece[BLACK][x][y] = 0x0;
 
 			// FIXME: Draw actual pieces
-			Pieces.Piece[PAWN][x][y] = 0x2222;
-			Pieces.Piece[BISHOP][x][y] = 0x6666;
+			Pieces.Piece[PAWN][x][y] = 0x1111;		// Brown
+			Pieces.Piece[BISHOP][x][y] = 0x2222;	// Green
+			Pieces.Piece[KNIGHT][x][y] = 0x3333;	// Yellow
+			Pieces.Piece[ROOK][x][y] = 0x4444;		// Indigo
+			Pieces.Piece[QUEEN][x][y] = 0x5555;		// Blue
+			Pieces.Piece[KING][x][y] = 0x6666;		// Purple
 		}
 	}
 
@@ -35,13 +39,46 @@ void InitChessPieces(void) {
 
 void DrawChessBoard(void) {
 	// Initialize variables
-	int file, rank;	// x,y co-ordiantes of chessboard
+	// ranks are rows
+	// files are columns
+	int file, rank;	// Piece position on the chess board
+	int piece = 0;	// Piece to draw
 
 	// Loop through file and rank of the chess board
-	for (file = 0; file < 8; file++) {
-		for (rank = 0; rank < 8; rank++) {
+	for (rank = 0; rank < 8; rank++) {
+		for (file = 0; file < 8; file++) {
+			piece = 0;
+			
+			if (rank == 1 || rank == 6) {
+				piece = PAWN;
+			}
+
+			if (rank == 0 || rank == 7) {
+				switch (file) {
+					case 0:
+					case 7:
+						piece = ROOK;
+						break;
+					case 1:
+					case 6:
+						piece = KNIGHT;
+						break;
+					case 2:
+					case 5:
+						piece = BISHOP;
+						break;
+					case 3:
+						piece = KING;
+						break;
+					case 4:
+						piece = QUEEN;
+						break;
+				}
+
+			}
+
 			// Draw the background of the chess board
-			DrawChessPieces(rank, file, 0);
+			DrawChessPieces(rank, file, piece);
 		}
 	}
 }
