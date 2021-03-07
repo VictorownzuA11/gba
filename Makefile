@@ -18,7 +18,7 @@ PATH := $(DEVKITARM)/bin:$(PATH)
 PROJ    := src/main
 TARGET  := $(PROJ)
 
-OBJS    := $(PROJ).o
+OBJS    := $(PROJ).o src/helper.o src/pieces.o
 
 # --- Build defines ---------------------------------------------------
 

@@ -6,3 +6,8 @@
 
 # Out directory
 out/
+
+# Out files
+*.elf
+*.gba
+*.o
