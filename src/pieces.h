@@ -9,12 +9,16 @@ typedef struct Pieces_t {
 	// Rook
 	// Queen
 	// King
-	int Piece[8][20][20];
+	int Piece[2][8][20][20];
 } Pieces_t;
 
-enum pieces_enum {
+enum colors_enum {
 	WHITE,	// 0
-	BLACK,	// 1
+	BLACK	// 1
+};
+
+enum pieces_enum {
+	BOARD,	// 0
 	PAWN,	// 2
 	BISHOP,	// 3
 	KNIGHT,	// 4

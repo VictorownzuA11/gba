@@ -16,16 +16,16 @@ void InitChessPieces(void) {
 	// Draw WHITE and BLACK Board
 	for (x = 0; x < 20; x++) {
 		for (y = 0; y < 20; y++) {
-			Pieces.Piece[WHITE][x][y] = 0x7FFF;
-			Pieces.Piece[BLACK][x][y] = 0x0;
+			Pieces.Piece[WHITE][BOARD][x][y] = 0x7FFF;
+			Pieces.Piece[BLACK][BOARD][x][y] = 0x0;
 
 			// FIXME: Draw actual pieces
-			Pieces.Piece[PAWN][x][y] = 0x1111;		// Brown
-			Pieces.Piece[BISHOP][x][y] = 0x2222;	// Green
-			Pieces.Piece[KNIGHT][x][y] = 0x3333;	// Yellow
-			Pieces.Piece[ROOK][x][y] = 0x4444;		// Indigo
-			Pieces.Piece[QUEEN][x][y] = 0x5555;		// Blue
-			Pieces.Piece[KING][x][y] = 0x6666;		// Purple
+			Pieces.Piece[WHITE][PAWN][x][y] = 0x1111;	// Brown
+			Pieces.Piece[WHITE][BISHOP][x][y] = 0x2222;	// Green
+			Pieces.Piece[WHITE][KNIGHT][x][y] = 0x3333;	// Yellow
+			Pieces.Piece[WHITE][ROOK][x][y] = 0x4444;	// Indigo
+			Pieces.Piece[WHITE][QUEEN][x][y] = 0x5555;	// Blue
+			Pieces.Piece[WHITE][KING][x][y] = 0x6666;	// Purple
 		}
 	}
 
@@ -42,12 +42,12 @@ void DrawChessBoard(void) {
 	// ranks are rows
 	// files are columns
 	int file, rank;	// Piece position on the chess board
-	int piece = 0;	// Piece to draw
+	int piece ;	// Piece to draw
 
 	// Loop through file and rank of the chess board
 	for (rank = 0; rank < 8; rank++) {
 		for (file = 0; file < 8; file++) {
-			piece = 0;
+			piece = BOARD;
 			
 			if (rank == 1 || rank == 6) {
 				piece = PAWN;
@@ -74,7 +74,6 @@ void DrawChessBoard(void) {
 						piece = QUEEN;
 						break;
 				}
-
 			}
 
 			// Draw the background of the chess board
@@ -86,20 +85,20 @@ void DrawChessBoard(void) {
 
 void DrawChessPieces(int rank, int file, int piece) {
 	// Initialize variables
-	int x, y;
+	int x, y, color = 0;
 	
-	if (piece == 0) {
+	if (piece == BOARD) {
 		if ((file + rank)%2 == 0) {
-			piece = WHITE;
+			color = WHITE;
 		} else {
-			piece = BLACK;
+			color = BLACK;
 		}
 	}
 
 	// Color the tile at (rank, file)
 	for (x = 0; x < 20; x++) {
 		for (y = 0; y < 20; y++) {
-			vram[file*20 + x + (rank*20 + y)*240] = Pieces.Piece[piece][x][y];
+			vram[file*20 + x + (rank*20 + y)*240] = Pieces.Piece[color][piece][x][y];
 		}
 	}
 }
