@@ -1,34 +1,54 @@
 #ifndef _PIECES_H_
 #define _PIECES_H_
 
+
+#define PIECE_SIZE 16
+#define BOARD_SIZE 20
+
+
+enum colors_enum {
+	WHITE,		// 0
+	BLACK,		// 1
+	COLOR_CNT	// 2
+};
+
+
+enum pieces_enum {
+	PAWN,		// 0
+	BISHOP,		// 1
+	KNIGHT,		// 2
+	ROOK,		// 3
+	QUEEN,		// 4
+	KING,		// 5
+	PIECE_CNT	// 6
+};
+
+
+typedef struct Piece_t {
+	int type, color;
+} Piece_t;
+
+
+typedef struct Board_t {
+	int Board[COLOR_CNT][BOARD_SIZE][BOARD_SIZE];
+} Board_t;
+
+
 typedef struct Pieces_t {
-	// Board
 	// Pawn
 	// Bishop
 	// Knight
 	// Rook
 	// Queen
 	// King
-	int Piece[2][8][20][20];
+	int Piece[COLOR_CNT][PIECE_CNT][PIECE_SIZE][PIECE_SIZE];
 } Pieces_t;
 
-enum colors_enum {
-	WHITE,	// 0
-	BLACK	// 1
-};
-
-enum pieces_enum {
-	BOARD,	// 0
-	PAWN,	// 2
-	BISHOP,	// 3
-	KNIGHT,	// 4
-	ROOK,	// 5
-	QUEEN,	// 6
-	KING	// 7
-};
 
 void InitChessPieces(void);
-void DrawChessBoard(void);
-void DrawChessPieces(int rank, int file, int piece);
+void InitChessBoard(void);
+void DrawChessBoard(int rank, int file);
+void DrawChessPiece(int rank, int file, int piece, int color);
+void MoveChessPieces(int preRank, int preFile, int rank, int file);
 
 #endif

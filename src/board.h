@@ -2,6 +2,7 @@ typedef struct board{
     int board[64];
     int gamestate;
 }gameboard;
+
 enum pieces_num {
 	WHITE=1,	// 0
 	BLACK=-1,	// 1

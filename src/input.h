@@ -1,6 +1,8 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
+#include "helper.h"
+
 #define REG_KEYINPUT  (* (volatile unsigned short*) 0x4000130)
 
 #define KEY_A        0x0001

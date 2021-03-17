@@ -2,7 +2,7 @@
 
 unsigned short input_cur = 0x03FF;
 unsigned short input_prev = 0x03FF;
-volatile unsigned short *vdram = (unsigned short *)0x06000000;
+
 
 int *getUserInput(void){
     // output an int array of size four
@@ -64,7 +64,7 @@ int MoveSquare(unsigned short pressed, int *file, int *rank){
         //Move highlighted square right
         for (x = 0; x < 20; x++) {
             for (y = 0; y < 20; y++) {
-                vdram[(*file)*20 + x + ((*rank)*20 + y)*240] -= 0x0500;
+                vram[(*file)*20 + x + ((*rank)*20 + y)*240] -= 0x0500;
             }
         }
         if (*file < 7){
@@ -72,7 +72,7 @@ int MoveSquare(unsigned short pressed, int *file, int *rank){
         }
         for (x = 0; x < 20; x++) {
             for (y = 0; y < 20; y++) {
-                vdram[(*file)*20 + x + ((*rank)*20 + y)*240] += 0x0500;
+                vram[(*file)*20 + x + ((*rank)*20 + y)*240] += 0x0500;
             }
         }
     }
@@ -80,7 +80,7 @@ int MoveSquare(unsigned short pressed, int *file, int *rank){
         //Move highlighted square left
         for (x = 0; x < 20; x++) {
             for (y = 0; y < 20; y++) {
-                vdram[(*file)*20 + x + ((*rank)*20 + y)*240] -= 0x0500;
+                vram[(*file)*20 + x + ((*rank)*20 + y)*240] -= 0x0500;
             }
         }
         if (*file > 0){
@@ -88,7 +88,7 @@ int MoveSquare(unsigned short pressed, int *file, int *rank){
         }
         for (x = 0; x < 20; x++) {
             for (y = 0; y < 20; y++) {
-                vdram[(*file)*20 + x + ((*rank)*20 + y)*240] += 0x0500;
+                vram[(*file)*20 + x + ((*rank)*20 + y)*240] += 0x0500;
             }
         }
     }
@@ -96,7 +96,7 @@ int MoveSquare(unsigned short pressed, int *file, int *rank){
         //Move highlighted square up
         for (x = 0; x < 20; x++) {
             for (y = 0; y < 20; y++) {
-                vdram[(*file)*20 + x + ((*rank)*20 + y)*240] -= 0x0500;
+                vram[(*file)*20 + x + ((*rank)*20 + y)*240] -= 0x0500;
             }
         }
         if (*rank < 7){
@@ -104,7 +104,7 @@ int MoveSquare(unsigned short pressed, int *file, int *rank){
         }
         for (x = 0; x < 20; x++) {
             for (y = 0; y < 20; y++) {
-                vdram[(*file)*20 + x + ((*rank)*20 + y)*240] += 0x0500;
+                vram[(*file)*20 + x + ((*rank)*20 + y)*240] += 0x0500;
             }
         }
     }
@@ -112,7 +112,7 @@ int MoveSquare(unsigned short pressed, int *file, int *rank){
         //Move highlighted square down
         for (x = 0; x < 20; x++) {
             for (y = 0; y < 20; y++) {
-                vdram[(*file)*20 + x + ((*rank)*20 + y)*240] -= 0x0500;
+                vram[(*file)*20 + x + ((*rank)*20 + y)*240] -= 0x0500;
             }
         }
         if (*rank > 0){
@@ -120,7 +120,7 @@ int MoveSquare(unsigned short pressed, int *file, int *rank){
         }
         for (x = 0; x < 20; x++) {
             for (y = 0; y < 20; y++) {
-                vdram[(*file)*20 + x + ((*rank)*20 + y)*240] += 0x0500;
+                vram[(*file)*20 + x + ((*rank)*20 + y)*240] += 0x0500;
             }
         }
     }
@@ -135,7 +135,7 @@ int restoreSquare(int file, int rank){
     int x,y;
     for (x = 0; x < 20; x++) {
         for (y = 0; y < 20; y++) {
-            vdram[(file)*20 + x + ((rank)*20 + y)*240] -= 0x0500;
+            vram[(file)*20 + x + ((rank)*20 + y)*240] -= 0x0500;
         }
     }
     return 1;
@@ -145,7 +145,7 @@ int initSquare(int file, int rank){
     int x,y;
     for (x = 0; x < 20; x++) {
         for (y = 0; y < 20; y++) {
-            vdram[(file)*20 + x + ((rank)*20 + y)*240] += 0x0500;
+            vram[(file)*20 + x + ((rank)*20 + y)*240] += 0x0500;
         }
     }
     return 1;

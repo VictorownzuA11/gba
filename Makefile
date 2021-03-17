@@ -56,8 +56,8 @@ $(OBJS) : %.o : %.c
 # --- Clean -----------------------------------------------------------
 
 clean :
-	@rm -fv *.gba
-	@rm -fv *.elf
-	@rm -fv *.o
+	@rm -fv src/*.gba
+	@rm -fv src/*.elf
+	@rm -fv src/*.o
 
 #EOF
