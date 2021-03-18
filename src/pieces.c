@@ -2,21 +2,14 @@
 #include "main.h"
 #include "helper.h"
 #include "score.h"
+#include "input.h"
 
 
 Pieces_t Pieces;
-Board_t Board;
+
 
 void InitChessPieces(void) {
 	int x, y;
-	
-	// Draw WHITE and BLACK Board
-	for (x = 0; x < BOARD_SIZE; x++) {
-		for (y = 0; y < BOARD_SIZE; y++) {
-			Board.Board[WHITE][x][y] = 0x7FFF;
-			Board.Board[BLACK][x][y] = 0x0;
-		}
-	}
 
 	for (x = 0; x < PIECE_SIZE; x++) {
 		for (y = 0; y < PIECE_SIZE; y++) {
@@ -85,7 +78,7 @@ void InitChessBoard(void) {
 			}
 
 			if (piece != PIECE_CNT) {
-				if (rank > 4) {
+				if (rank < 4) {
 					color = WHITE;
 				} else {
 					color = BLACK;
@@ -114,31 +107,80 @@ void DrawChessBoard(int rank, int file) {
 	int x, y, color = 0;
 
 	if ((file + rank)%2 == 0) {
-		color = WHITE;
+		color = 0x7FFF;
 	} else {
-		color = BLACK;
+		color = 0x0;
 	}
 
 	// Color the tile at (rank, file)
 	for (x = 0; x < BOARD_SIZE; x++) {
 		for (y = 0; y < BOARD_SIZE; y++) {
-			vram[file*BOARD_SIZE + x + (rank*BOARD_SIZE + y)*240] = Board.Board[color][x][y];
+			vram[file*BOARD_SIZE + x + (rank*BOARD_SIZE + y)*240] = color;
 		}
 	}
 }
 
 
-void MoveChessPieces(int preRank, int preFile, int rank, int file) {
-	// // Clear the previous position on chess board
-	// DrawChessBoard(preRank, preFile);
+void MoveChessPieces(UserInput_t UserInput) {
+	// Clear the previous position on chess board
+	DrawChessBoard(UserInput.prevRank, UserInput.prevFile);
 
-	// // Get the chess piece from ScoreBaord
-	// Piece_t Piece;
+	// Get the chess piece from ScoreBaord
+	Piece_t Piece;
 
-	// Piece = GetPiece(preRank, preFile);
+	Piece.type = ROOK;
+	Piece.color = WHITE;
 
-	// UpdateScoreBoard(Piece, rank, file);
+	//Piece = GetPiece(UserInput.prevRank, UserInput.prevFile);
 
-	// // Draw the Piece's new position
-	// DrawChessPiece(rank, file, Piece.type, Piece.color);
+	//UpdateScoreBoard(Piece, UserInput.rank, UserInput.file);
+
+	// Draw the Piece's new position
+	DrawChessPiece(UserInput.rank, UserInput.file, Piece.type, Piece.color);
+}
+
+
+void ClearCursor(UserInput_t UserInput) {
+	// Initialize variables
+	int x, y, color = 0, prevColor = 0;
+
+	if ((UserInput.file + UserInput.rank)%2 == 0) {
+		color = 0x7FFF;
+	} else {
+		color = 0x0;
+	}
+
+	if ((UserInput.prevFile + UserInput.prevRank)%2 == 0) {
+		prevColor = 0x7FFF;
+	} else {
+		prevColor = 0x0;
+	}
+
+
+	// Draw box around tile user has selected
+	for (x = 0; x < BOARD_SIZE; x++) {
+		for (y = 0; y < BOARD_SIZE; y++) {
+			if (((x < 4) || (x >= PIECE_SIZE)) || ((y < 4) || (y >= PIECE_SIZE))) {
+				vram[UserInput.prevFile*BOARD_SIZE + x + (UserInput.prevRank*BOARD_SIZE + y)*240] =  prevColor; // Red
+				vram[UserInput.file*BOARD_SIZE + x + (UserInput.rank*BOARD_SIZE + y)*240] =  color; // Red
+			}
+		}
+	}
+}
+
+
+void DrawCursor(UserInput_t UserInput) {
+	int x, y;
+
+	// Draw box around tile user has selected
+	for (x = 0; x < BOARD_SIZE; x++) {
+		for (y = 0; y < BOARD_SIZE; y++) {
+			if (((x < 4) || (x >= PIECE_SIZE)) || ((y < 4) || (y >= PIECE_SIZE))) {
+				if (UserInput.select) {
+					vram[UserInput.prevFile*BOARD_SIZE + x + (UserInput.prevRank*BOARD_SIZE + y)*240] = 0x10; // Red
+				}
+				vram[UserInput.file*BOARD_SIZE + x + (UserInput.rank*BOARD_SIZE + y)*240] = 0x1F; // Red
+			}
+		}
+	}
 }

@@ -1,6 +1,7 @@
 #ifndef _PIECES_H_
 #define _PIECES_H_
 
+#include "input.h"
 
 #define PIECE_SIZE 16
 #define BOARD_SIZE 20
@@ -29,11 +30,6 @@ typedef struct Piece_t {
 } Piece_t;
 
 
-typedef struct Board_t {
-	int Board[COLOR_CNT][BOARD_SIZE][BOARD_SIZE];
-} Board_t;
-
-
 typedef struct Pieces_t {
 	// Pawn
 	// Bishop
@@ -49,6 +45,8 @@ void InitChessPieces(void);
 void InitChessBoard(void);
 void DrawChessBoard(int rank, int file);
 void DrawChessPiece(int rank, int file, int piece, int color);
-void MoveChessPieces(int preRank, int preFile, int rank, int file);
+void MoveChessPieces(UserInput_t UserInput);
+void ClearCursor(UserInput_t UserInput);
+void DrawCursor(UserInput_t UserInput);
 
 #endif

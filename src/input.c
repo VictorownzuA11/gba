@@ -4,12 +4,13 @@ unsigned short input_cur = 0x03FF;
 unsigned short input_prev = 0x03FF;
 
 
-int *getUserInput(void){
+UserInput_t getUserInput(void) {
     // output an int array of size four
     // {origin file, origin rank, target cell, target rank}
     const unsigned short keys[] = {KEY_A, KEY_B, KEY_RIGHT, KEY_LEFT,
                                 KEY_UP, KEY_DOWN};
     unsigned short pressed;
+    UserInput_t UserInput;
     int out[4];
     int ori_selected = 0;
     int file = 0;
@@ -17,16 +18,16 @@ int *getUserInput(void){
 
     // initialize highlighted cell (top right)
     initSquare(file, rank);
-    key_poll();
+    KeyPoll();
 
     while(1){
-        key_poll();
+        KeyPoll();
         pressed = 0x0000;
         //check for key press
         for (int i=0; i<6; i++){
             if (wasKeyPressed(keys[i])){
                 while (!wasKeyReleased(keys[i])){
-                    key_poll();
+                    KeyPoll();
                 }
                 pressed = keys[i];
                 break;
@@ -54,7 +55,7 @@ int *getUserInput(void){
     }
     // restore last selected cell
     restoreSquare(file, rank);
-    return out;
+    return UserInput;
 }
 
 int MoveSquare(unsigned short pressed, int *file, int *rank){
@@ -151,23 +152,19 @@ int initSquare(int file, int rank){
     return 1;
 }
 
-void key_poll()
-{
+void KeyPoll(void) {
     input_prev = input_cur;
     input_cur = REG_KEYINPUT | KEY_MASK;
 }
 
-unsigned short wasKeyPressed(unsigned short key_code)
-{
+unsigned short wasKeyPressed(unsigned short key_code) {
     return (key_code) & (~input_cur & input_prev);
 }
 
-unsigned short wasKeyReleased(unsigned short key_code)
-{
+unsigned short wasKeyReleased(unsigned short key_code) {
     return  (key_code) & (input_cur & ~input_prev);
 }
 
-unsigned short getKeyState(unsigned short key_code)
-{
+unsigned short getKeyState(unsigned short key_code) {
     return !(key_code & (input_cur) );
 }

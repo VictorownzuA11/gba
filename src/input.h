@@ -3,6 +3,19 @@
 
 #include "helper.h"
 
+
+extern unsigned short input_cur;
+extern unsigned short input_prev;
+
+typedef struct UserInput_t {
+	int prevRank;
+	int prevFile;
+	int rank;
+	int file;
+	int select;
+} UserInput_t;
+
+
 #define REG_KEYINPUT  (* (volatile unsigned short*) 0x4000130)
 
 #define KEY_A        0x0001
@@ -18,11 +31,11 @@
 
 #define KEY_MASK     0xFC00
 
-void key_poll();
+void KeyPoll(void);
 unsigned short wasKeyPressed(unsigned short key_code);
 unsigned short wasKeyReleased(unsigned short key_code);
 unsigned short getKeyState(unsigned short key_code);
-int *getUserInput(void);
+UserInput_t getUserInput(void);
 int MoveSquare(unsigned short pressed, int *file, int *rank);
 int initSquare(int file, int rank);
 int restoreSquare(int file, int rank);
