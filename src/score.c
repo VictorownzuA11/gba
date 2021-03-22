@@ -134,7 +134,7 @@ int ValidMove(UserInput_t UserInput) {
 		// No En Passant, see: https://en.wikipedia.org/wiki/En_passant
 
 		// TRUE: Attacking a piece
-		if ((destination != BOARD) && (dRank== 1) && (dFile*dirFile == 1)) {
+		if ((destination != BOARD) && (dRank == 1) && (dFile*dirFile == 1)) {
 			return 1;
 		}
 
