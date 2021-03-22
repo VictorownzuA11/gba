@@ -290,7 +290,7 @@ int ValidMove(UserInput_t UserInput) {
 	// KING
 	if ((piece == bKING) || (piece == wKING)) {
 		// King tries to move more than 1 space
-		if ((dRank*dirRank == 1) && (dFile*dirFile == 1)) {
+		if ((dRank < 2) && (dRank > -2) && (dFile*dirFile <= 1)) {
 			return 1;
 		}
 
