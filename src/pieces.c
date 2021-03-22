@@ -7,7 +7,6 @@
 
 Pieces_t Pieces;
 
-
 void InitChessPieces(void) {
 	int x, y;
 
@@ -28,26 +27,6 @@ void InitChessPieces(void) {
 			Pieces.Piece[wROOK][x][y] = 0x4444;	// Indigo
 			Pieces.Piece[wQUEEN][x][y] = 0x5555;	// Blue
 			Pieces.Piece[wKING][x][y] = 0x6666;	// Purple
-		}
-	}
-}
-
-
-void InitChessBoard(void) {
-	// Initialize variables
-	// ranks are rows
-	// files are columns
-	int file, rank;	// Piece position on the chess board
-
-	// Loop through file and rank of the chess board
-	for (rank = 0; rank < 8; rank++) {
-		for (file = 0; file < 8; file++) {
-			// Draw the board
-			DrawChessBoard(rank, file);
-
-			if (Board[rank][file] != BOARD) {
-				DrawChessPiece(rank, file);
-			}
 		}
 	}
 }

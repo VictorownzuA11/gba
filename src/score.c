@@ -1,9 +1,11 @@
 #include "score.h"
 #include "pieces.h"
 #include "input.h"
+#include "string.h"
 
+int Board[8][8];
 
-int Board[8][8] = {
+int StartBoard[8][8] = {
 	{bROOK, bKNIGHT, bBISHOP, bQUEEN, bKING, bBISHOP, bKNIGHT, bROOK},
 	{bPAWN, bPAWN,   bPAWN,   bPAWN,  bPAWN, bPAWN,   bPAWN,   bPAWN},
 	{BOARD, BOARD,   BOARD,   BOARD,  BOARD, BOARD,   BOARD,   BOARD},
@@ -14,9 +16,36 @@ int Board[8][8] = {
 	{wROOK, wKNIGHT, wBISHOP, wQUEEN, wKING, wBISHOP, wKNIGHT, wROOK},
 };
 
-int FirstPawn[2][8] = {
+int FirstPawn[2][8];
+
+int StartFirstPawn[2][8] = {
 	0
 };
+
+
+void InitChessBoard(void) {
+	// Initialize variables
+	// ranks are rows
+	// files are columns
+	int file, rank;	// Piece position on the chess board
+
+	// Initialize the board state to start board
+	memcpy(*Board, *StartBoard, sizeof Board);
+
+	memcpy(FirstPawn, *StartFirstPawn, sizeof FirstPawn);
+
+	// Loop through file and rank of the chess board
+	for (rank = 0; rank < 8; rank++) {
+		for (file = 0; file < 8; file++) {
+			// Draw the board
+			DrawChessBoard(rank, file);
+
+			if (Board[rank][file] != BOARD) {
+				DrawChessPiece(rank, file);
+			}
+		}
+	}
+}
 
 
 int CheckBoard(UserInput_t UserInput, int color) {
@@ -303,6 +332,41 @@ void UpdateScoreBoard(UserInput_t UserInput) {
 }
 
 
-UserInput_t Checkmate(UserInput_t UserInput, int color) {
+UserInput_t IsCheck(UserInput_t UserInput) {
+	// Initialize variables
+	int piece;
+	int check = 0;
+
+	// Need a temp variable to store all the moves
+	UserInput_t TempInput = UserInput;
+	
+	// Loop through the entire board
+	for (int prevRank = 0; prevRank < 8; prevRank++) {
+		for (int prevFile = 0; prevFile < 8; prevFile++) {
+			piece = Board[prevRank][prevFile];
+
+			// Find every WHITE piece
+			if (piece > BOARD) {
+				// Update TempInput to the current positon
+				TempInput.prevRank = prevRank;
+				TempInput.prevFile = prevFile;
+
+				// Loop thorugh all possible places the piece can move
+				for (int rank = 0; rank < 8; rank++) {
+					for (int file = 0; file < 8; file++) {
+						TempInput.rank = rank;
+						TempInput.file = file;
+
+						// Check for Check on BlackKing
+						if (ValidMove(TempInput) && (Board[rank][file] == bKING)) {
+							check++;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	
 	return UserInput;
 }

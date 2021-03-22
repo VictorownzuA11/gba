@@ -56,7 +56,19 @@ Reset: ;
 			UserInput.file = UserInput.prevFile;
 			UserInput.rank = UserInput.prevRank;
 		} else if (wasKeyPressed(KEY_A) && (UserInput.select == 1) && ValidMove(UserInput)) {
-			UserInput = Checkmate(UserInput, color);
+			// Check for check
+			UserInput = IsCheck(UserInput);
+
+			// Check for checkmate
+			if (color == WHITE) {
+				if (Board[UserInput.rank][UserInput.file] == bKING) {
+					goto Reset;
+				}
+			} else if (color == BLACK) {
+				if (Board[UserInput.rank][UserInput.file] == wKING) {
+					goto Reset;
+				}
+			}
 
 			if ((UserInput.bCheck > 1) || (UserInput.wCheck > 1)) {
 				goto Reset;

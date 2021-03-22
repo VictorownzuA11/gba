@@ -26,6 +26,6 @@ enum score_enum {
 int CheckBoard(UserInput_t UserInput, int color);
 int ValidMove(UserInput_t UserInput);
 void UpdateScoreBoard(UserInput_t UserInput);
-UserInput_t Checkmate(UserInput_t UserInput, int color);
+UserInput_t IsCheck(UserInput_t UserInput);
 
 #endif
