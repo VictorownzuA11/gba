@@ -4,27 +4,28 @@
 #include "input.h"
 #include "pieces.h"
 
-extern int Board;
+extern int Board[8][8];
 
 enum score_enum {
-	bPAWN = -1,		// 1
-	bBISHOP = -2,	// 2
-	bKNIGHT = -3,	// 3
-	bROOK = -4,		// 4
-	bQUEEN = -5,	// 5
-	bKING = -6,		// 6
-	BOARD = 0,		// 0
-	wPAWN = 1,		// 1
-	wBISHOP = 2,	// 2
-	wKNIGHT = 3,	// 3
-	wROOK = 4,		// 4
-	wQUEEN = 5,		// 5
-	wKING = 6,		// 6
+	bPAWN = 0,		// 0
+	bBISHOP = 1,	// 1
+	bKNIGHT = 2,	// 2
+	bROOK = 3,		// 3
+	bQUEEN = 4,		// 4
+	bKING = 5,		// 5
+	BOARD = 6,		// 6
+	wPAWN = 7,		// 7
+	wBISHOP = 8,	// 8
+	wKNIGHT = 9,	// 9
+	wROOK = 10,		// 10
+	wQUEEN = 11,	// 11
+	wKING = 12,		// 12
 };
 
 
-int checkBoard(UserInput_t UserInput, int color);
-int ValidMove(void);
-void UpdateScoreBoard(Piece_t Piece, int rank, int file);
+int CheckBoard(UserInput_t UserInput, int color);
+int ValidMove(UserInput_t UserInput);
+void UpdateScoreBoard(UserInput_t UserInput);
+UserInput_t Checkmate(UserInput_t UserInput, int color);
 
 #endif

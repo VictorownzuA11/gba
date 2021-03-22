@@ -13,6 +13,8 @@ typedef struct UserInput_t {
 	int rank;
 	int file;
 	int select;
+	int bCheck;
+	int wCheck;
 } UserInput_t;
 
 

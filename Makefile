@@ -18,7 +18,7 @@ PATH := $(DEVKITARM)/bin:$(PATH)
 PROJ    := src/main
 TARGET  := $(PROJ)
 
-OBJS    := $(PROJ).o src/helper.o src/pieces.o src/input.o
+OBJS    := $(PROJ).o src/helper.o src/pieces.o src/input.o src/score.o
 
 # --- Build defines ---------------------------------------------------
 
@@ -40,6 +40,11 @@ LDFLAGS := $(ARCH) $(SPECS)
 # Build process starts here!
 build: $(TARGET).gba
 
+# Move the output files to out folder
+	@mv src/*.gba out/
+	@mv src/*.elf out/
+	@mv src/*.o out/
+
 # Strip and fix header (step 3,4)
 $(TARGET).gba : $(TARGET).elf
 	$(OBJCOPY) -v -O binary $< $@
@@ -56,8 +61,6 @@ $(OBJS) : %.o : %.c
 # --- Clean -----------------------------------------------------------
 
 clean :
-	@rm -fv src/*.gba
-	@rm -fv src/*.elf
-	@rm -fv src/*.o
+	@rm -fv out/*
 
 #EOF
