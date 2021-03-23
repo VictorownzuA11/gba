@@ -19,7 +19,8 @@ int StartBoard[8][8] = {
 int FirstPawn[2][8];
 
 int StartFirstPawn[2][8] = {
-	0
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0}
 };
 
 
@@ -100,6 +101,7 @@ int ValidMove(UserInput_t UserInput) {
 
 	// Distance the piece moves
 	if (playerColor == 0) {
+		// We are ensuring that "forward" for that player is always positive
 		dRank = UserInput.rank - UserInput.prevRank;	// Black
 	} else {
 		dRank = UserInput.prevRank - UserInput.rank;	// White
@@ -119,13 +121,17 @@ int ValidMove(UserInput_t UserInput) {
 		dirRank = 1;
 	}
 
+	// Flip the direction of WHITE pieces
 	if (playerColor == 1) {
 		dirRank *= -1;
 	}
 
+	// Get the direction of file movement
 	if (dFile < 0) {
+		// Left
 		dirFile = -1;
 	} else {
+		// Right
 		dirFile = 1;
 	}
 

@@ -7,26 +7,31 @@
 
 Pieces_t Pieces;
 
+
 void InitChessPieces(void) {
 	int x, y;
 
 	for (x = 0; x < PIECE_SIZE; x++) {
 		for (y = 0; y < PIECE_SIZE; y++) {
 			// FIXME: Draw actual pieces
-			Pieces.Piece[bPAWN][x][y] = 0x1111;	// Brown
-			Pieces.Piece[bBISHOP][x][y] = 0x2222;	// Green
-			Pieces.Piece[bKNIGHT][x][y] = 0x3333;	// Yellow
-			Pieces.Piece[bROOK][x][y] = 0x4444;	// Indigo
-			Pieces.Piece[bQUEEN][x][y] = 0x5555;	// Blue
-			Pieces.Piece[bKING][x][y] = 0x6666;	// Purple
+			if (y > x) { // BLACK
+				Pieces.Piece[bPAWN][x][y] = 0x1111;	// Brown
+				Pieces.Piece[bBISHOP][x][y] = 0x2222;	// Green
+				Pieces.Piece[bKNIGHT][x][y] = 0x3333;	// Yellow
+				Pieces.Piece[bROOK][x][y] = 0x4444;	// Indigo
+				Pieces.Piece[bQUEEN][x][y] = 0x5555;	// Blue
+				Pieces.Piece[bKING][x][y] = 0x6666;	// Purple
+			}
 
 			// FIXME: Draw actual pieces
-			Pieces.Piece[wPAWN][x][y] = 0x1111;	// Brown
-			Pieces.Piece[wBISHOP][x][y] = 0x2222;	// Green
-			Pieces.Piece[wKNIGHT][x][y] = 0x3333;	// Yellow
-			Pieces.Piece[wROOK][x][y] = 0x4444;	// Indigo
-			Pieces.Piece[wQUEEN][x][y] = 0x5555;	// Blue
-			Pieces.Piece[wKING][x][y] = 0x6666;	// Purple
+			if (!(y > x)) { // WHITE
+				Pieces.Piece[wPAWN][x][y] = 0x1111;	// Brown
+				Pieces.Piece[wBISHOP][x][y] = 0x2222;	// Green
+				Pieces.Piece[wKNIGHT][x][y] = 0x3333;	// Yellow
+				Pieces.Piece[wROOK][x][y] = 0x4444;	// Indigo
+				Pieces.Piece[wQUEEN][x][y] = 0x5555;	// Blue
+				Pieces.Piece[wKING][x][y] = 0x6666;	// Purple
+			}
 		}
 	}
 }
@@ -39,7 +44,15 @@ void DrawChessPiece(int rank, int file) {
 
 	for (x = 4; x < PIECE_SIZE; x++) {
 		for (y = 4; y < PIECE_SIZE; y++) {
-			vram[file*BOARD_SIZE + x + (rank*BOARD_SIZE + y)*240] = Pieces.Piece[piece][x][y];
+			if ((piece < BOARD) && (y > x)) {
+				// BLACK
+				vram[file*BOARD_SIZE + x + (rank*BOARD_SIZE + y)*240] = Pieces.Piece[piece][x][y];
+			}
+			
+			if ((piece > BOARD) && (!(y > x))) {
+				// BLACK
+				vram[file*BOARD_SIZE + x + (rank*BOARD_SIZE + y)*240] = Pieces.Piece[piece][x][y];
+			}
 		}
 	}
 }
