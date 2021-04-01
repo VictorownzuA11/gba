@@ -7,15 +7,14 @@
 
 Pieces_t Pieces;
 
-
 void InitChessPieces(void) {
 	int x, y;
-
+	/*
 	for (x = 0; x < PIECE_SIZE; x++) {
 		for (y = 0; y < PIECE_SIZE; y++) {
 			// FIXME: Draw actual pieces
 			if (y > x) { // BLACK
-				Pieces.Piece[bPAWN][x][y] = 0x1111;	// Brown
+				Pieces.Piece[bPAWN][x][y] = bpawnp[PIECE_SIZE*x + y];	// Brown
 				Pieces.Piece[bBISHOP][x][y] = 0x2222;	// Green
 				Pieces.Piece[bKNIGHT][x][y] = 0x3333;	// Yellow
 				Pieces.Piece[bROOK][x][y] = 0x4444;	// Indigo
@@ -33,7 +32,25 @@ void InitChessPieces(void) {
 				Pieces.Piece[wKING][x][y] = 0x6666;	// Purple
 			}
 		}
+	}*/
+	for (x = 0; x < PIECE_SIZE; x++) {
+		for (y = 0; y < PIECE_SIZE; y++) {
+			// FIXME: Draw actual pieces
+			Pieces.Piece[bPAWN][x][y] = bpawnp[PIECE_SIZE*y + x];
+			Pieces.Piece[wPAWN][x][y] = bpawnp[PIECE_SIZE*y + x] ^ WHITE;
+			Pieces.Piece[bROOK][x][y] = brookp[PIECE_SIZE*y + x];
+			Pieces.Piece[wROOK][x][y] = brookp[PIECE_SIZE*y + x] ^ WHITE;
+			Pieces.Piece[bKNIGHT][x][y] = bknightp[PIECE_SIZE*y + x];
+			Pieces.Piece[wKNIGHT][x][y] = bknightp[PIECE_SIZE*y + x] ^ WHITE;
+			Pieces.Piece[bBISHOP][x][y] = bbishopp[PIECE_SIZE*y + x];
+			Pieces.Piece[wBISHOP][x][y] = bbishopp[PIECE_SIZE*y + x] ^ WHITE;
+			Pieces.Piece[bQUEEN][x][y] = bqueenp[PIECE_SIZE*y + x];
+			Pieces.Piece[wQUEEN][x][y] = bqueenp[PIECE_SIZE*y + x] ^ WHITE;
+			Pieces.Piece[bKING][x][y] = bkingp[PIECE_SIZE*y + x];
+			Pieces.Piece[wKING][x][y] = bkingp[PIECE_SIZE*y + x] ^ WHITE;
+		}
 	}
+	
 }
 
 
@@ -42,16 +59,16 @@ void DrawChessPiece(int rank, int file) {
 
 	piece = Board[rank][file];
 
-	for (x = 4; x < PIECE_SIZE; x++) {
-		for (y = 4; y < PIECE_SIZE; y++) {
-			if ((piece < BOARD) && (y > x)) {
+	for (x = 0; x < PIECE_SIZE; x++) {
+		for (y = 0; y < PIECE_SIZE; y++) {
+			if ((piece < BOARD)){ //&& (y > x)) {
 				// BLACK
-				vram[file*BOARD_SIZE + x + (rank*BOARD_SIZE + y)*240] = Pieces.Piece[piece][x][y];
+				vram[file*BOARD_SIZE + x + 2 + (rank*BOARD_SIZE + y + 2)*240] = Pieces.Piece[piece][x][y];
 			}
 			
-			if ((piece > BOARD) && (!(y > x))) {
+			if ((piece > BOARD)){ // && (!(y > x))) {
 				// BLACK
-				vram[file*BOARD_SIZE + x + (rank*BOARD_SIZE + y)*240] = Pieces.Piece[piece][x][y];
+				vram[file*BOARD_SIZE + x + 2 + (rank*BOARD_SIZE + y + 2)*240] = Pieces.Piece[piece][x][y];
 			}
 		}
 	}
@@ -96,7 +113,7 @@ void ClearCursor(UserInput_t UserInput) {
 	// Draw box around tile user has selected
 	for (x = 0; x < BOARD_SIZE; x++) {
 		for (y = 0; y < BOARD_SIZE; y++) {
-			if (((x < 4) || (x >= PIECE_SIZE)) || ((y < 4) || (y >= PIECE_SIZE))) {
+			if (((x < 2) || (x >= PIECE_SIZE + 2)) || ((y < 2) || (y >= PIECE_SIZE + 2))) {
 				vram[UserInput.prevFile*BOARD_SIZE + x + (UserInput.prevRank*BOARD_SIZE + y)*240] =  prevColor; // Red
 				vram[UserInput.file*BOARD_SIZE + x + (UserInput.rank*BOARD_SIZE + y)*240] =  color; // Red
 			}
@@ -111,7 +128,7 @@ void DrawCursor(UserInput_t UserInput) {
 	// Draw box around tile user has selected
 	for (x = 0; x < BOARD_SIZE; x++) {
 		for (y = 0; y < BOARD_SIZE; y++) {
-			if (((x < 4) || (x >= PIECE_SIZE)) || ((y < 4) || (y >= PIECE_SIZE))) {
+			if (((x < 2) || (x >= PIECE_SIZE + 2)) || ((y < 2) || (y >= PIECE_SIZE + 2))) {
 				if (UserInput.select) {
 					vram[UserInput.prevFile*BOARD_SIZE + x + (UserInput.prevRank*BOARD_SIZE + y)*240] = 0x10; // Red
 				}
